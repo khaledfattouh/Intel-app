@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>INTEL° — Company Intelligence Platform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #0a0a0b;
@@ -50,7 +50,6 @@
     z-index: 0;
   }
 
-  /* TOPBAR */
   .topbar {
     position: fixed;
     top: 0;
@@ -138,7 +137,6 @@
     color: var(--green);
   }
 
-  /* MODAL */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -240,7 +238,6 @@
     filter: brightness(1.1);
   }
 
-  /* MAIN */
   .main {
     position: relative;
     z-index: 1;
@@ -249,7 +246,6 @@
     padding: 88px 24px 60px;
   }
 
-  /* HERO */
   .hero {
     text-align: center;
     padding: 40px 0 32px;
@@ -306,7 +302,6 @@
     line-height: 1.6;
   }
 
-  /* SETUP BANNER */
   .setup-banner {
     display: none;
     background: linear-gradient(135deg, rgba(200, 255, 0, 0.06), rgba(200, 255, 0, 0.02));
@@ -340,7 +335,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* SEARCH */
   .search-container {
     position: relative;
     margin: 24px 0 20px;
@@ -409,7 +403,6 @@
     transform: none;
   }
 
-  /* FILE UPLOAD */
   .upload-area {
     display: none;
     margin: 0 0 20px;
@@ -486,7 +479,6 @@
     color: var(--red);
   }
 
-  /* SERVICES */
   .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -530,7 +522,6 @@
     color: var(--accent);
   }
 
-  /* LOADING */
   .loading-state {
     display: none;
     text-align: center;
@@ -584,7 +575,6 @@
     color: var(--text-dim);
   }
 
-  /* RESULTS */
   .results-container {
     display: none;
   }
@@ -600,6 +590,7 @@
     margin-bottom: 24px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
+    gap: 12px;
   }
 
   .results-title {
@@ -612,6 +603,7 @@
     font-size: 11px;
     color: var(--text-muted);
     letter-spacing: 1px;
+    text-align: right;
   }
 
   .result-section {
@@ -667,9 +659,14 @@
     font-weight: 600;
   }
 
+  .section-content p {
+    margin-bottom: 12px;
+  }
+
   .section-content ul {
     list-style: none;
     padding: 0;
+    margin: 8px 0 12px;
   }
 
   .section-content li {
@@ -685,7 +682,6 @@
     font-size: 12px;
   }
 
-  /* ERROR */
   .error-msg {
     display: none;
     text-align: center;
@@ -711,7 +707,6 @@
     cursor: pointer;
   }
 
-  /* FOOTER */
   .footer {
     text-align: center;
     margin-top: 60px;
@@ -743,12 +738,13 @@
     .services-grid { grid-template-columns: repeat(2, 1fr); }
     .search-btn { padding: 14px 16px; font-size: 12px; }
     .result-section { padding: 20px; }
+    .results-header { flex-direction: column; align-items: flex-start; }
+    .results-meta { text-align: left; }
   }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="logo">INTEL<span>&deg;</span></div>
   <div class="topbar-right">
@@ -760,15 +756,14 @@
   </div>
 </div>
 
-<!-- API KEY MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <h2>Connect your OpenRouter key</h2>
     <p>INTEL&deg; routes through OpenRouter to access AI models with web search. Your key stays in your browser only.</p>
     <input type="password" id="apiKeyInput" placeholder="sk-or-v1-..." autocomplete="off" />
     <div class="hint">
-      1. Go to <a href="https://openrouter.ai" target="_blank">openrouter.ai</a> and sign up (Google login works)<br />
-      2. Go to <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> &rarr; Create Key &rarr; copy it<br />
+      1. Go to <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer">openrouter.ai</a> and sign up (Google login works)<br />
+      2. Go to <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer">openrouter.ai/keys</a> &rarr; Create Key &rarr; copy it<br />
       Free credit included &mdash; no payment needed.
     </div>
     <div class="modal-actions">
@@ -778,9 +773,7 @@
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
-
   <div class="hero" id="hero">
     <div class="hero-badge"><span class="dot"></span> AI-POWERED INTELLIGENCE</div>
     <h1>Know any company<br />in <em>seconds</em></h1>
@@ -794,13 +787,15 @@
 
   <div class="search-container">
     <div class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
       <input type="text" id="queryInput" placeholder="Enter a company name, business idea, or question..." autocomplete="off" />
       <button class="search-btn" id="searchBtn" onclick="runQuery()">ANALYZE</button>
     </div>
   </div>
 
-  <!-- FILE UPLOAD (consultant only) -->
   <div class="upload-area" id="uploadArea">
     <div class="upload-icon">&#128196;</div>
     <div class="upload-text"><strong>Drop files here</strong> or click to upload<br />Financial reports, P&amp;L sheets, strategy docs, spreadsheets</div>
@@ -808,7 +803,6 @@
     <div class="file-chips" id="fileChips"></div>
   </div>
 
-  <!-- SERVICES -->
   <div class="services-grid">
     <div class="service-tab active" data-service="research" onclick="selectService(this)"><div class="icon">&#128269;</div><div class="label">Company Brief</div></div>
     <div class="service-tab" data-service="startup" onclick="selectService(this)"><div class="icon">&#128640;</div><div class="label">Should I Start This?</div></div>
@@ -818,7 +812,6 @@
     <div class="service-tab" data-service="consultant" onclick="selectService(this)"><div class="icon">&#129504;</div><div class="label">AI Consultant</div></div>
   </div>
 
-  <!-- LOADING -->
   <div class="loading-state" id="loading">
     <div class="loader-ring"></div>
     <div class="loading-text">ANALYZING...</div>
@@ -829,42 +822,64 @@
     </div>
   </div>
 
-  <!-- ERROR -->
   <div class="error-msg" id="error">
     <p id="errorText">Something went wrong.</p>
     <button class="retry-btn" onclick="runQuery()">Try Again</button>
   </div>
 
-  <!-- RESULTS -->
   <div class="results-container" id="results"></div>
 
-  <!-- FOOTER -->
   <div class="footer">
     <p>INTEL&deg; COMPANY INTELLIGENCE</p>
     <p class="powered">Powered by <span>AI</span> via OpenRouter</p>
   </div>
-
 </div>
 
 <script>
 var currentService = 'research';
-var queryHistory = [];
+var queryHistory = JSON.parse(localStorage.getItem('intel_history') || '[]');
 var uploadedFiles = [];
 var API_KEY = localStorage.getItem('intel_or_key') || '';
+var lastRunUsedFallback = false;
 
 window.addEventListener('DOMContentLoaded', function() {
-  if (API_KEY) {
-    document.getElementById('apiKeyBtn').textContent = '\u2713 CONNECTED';
-    document.getElementById('apiKeyBtn').classList.add('connected');
-  } else {
+  updateApiButton();
+
+  if (!API_KEY) {
     document.getElementById('setupBanner').classList.add('visible');
   }
+
+  document.getElementById('queryInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') runQuery();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    processFiles(e.target.files);
+    e.target.value = '';
+  });
+
+  setupUploadDragAndDrop();
 });
+
+function updateApiButton() {
+  var btn = document.getElementById('apiKeyBtn');
+  if (API_KEY) {
+    btn.textContent = '\u2713 CONNECTED';
+    btn.classList.add('connected');
+    document.getElementById('setupBanner').classList.remove('visible');
+  } else {
+    btn.innerHTML = '&#9919; API KEY';
+    btn.classList.remove('connected');
+    document.getElementById('setupBanner').classList.add('visible');
+  }
+}
 
 function openModal() {
   document.getElementById('modal').classList.add('visible');
   document.getElementById('apiKeyInput').value = API_KEY;
-  setTimeout(function() { document.getElementById('apiKeyInput').focus(); }, 100);
+  setTimeout(function() {
+    document.getElementById('apiKeyInput').focus();
+  }, 100);
 }
 
 function closeModal() {
@@ -874,11 +889,10 @@ function closeModal() {
 function saveApiKey() {
   var key = document.getElementById('apiKeyInput').value.trim();
   if (!key) return;
+
   API_KEY = key;
   localStorage.setItem('intel_or_key', key);
-  document.getElementById('apiKeyBtn').textContent = '\u2713 CONNECTED';
-  document.getElementById('apiKeyBtn').classList.add('connected');
-  document.getElementById('setupBanner').classList.remove('visible');
+  updateApiButton();
   closeModal();
 }
 
@@ -890,6 +904,7 @@ function selectService(el) {
   var tabs = document.querySelectorAll('.service-tab');
   for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
   el.classList.add('active');
+
   currentService = el.getAttribute('data-service');
   if (currentService === 'consultant') {
     document.getElementById('uploadArea').classList.add('visible');
@@ -898,31 +913,34 @@ function selectService(el) {
   }
 }
 
-// File handling
-document.getElementById('fileInput').addEventListener('change', function(e) {
-  processFiles(e.target.files);
-});
+function setupUploadDragAndDrop() {
+  var uploadAreaEl = document.getElementById('uploadArea');
 
-var uploadAreaEl = document.getElementById('uploadArea');
-uploadAreaEl.addEventListener('dragover', function(e) {
-  e.preventDefault();
-  uploadAreaEl.classList.add('drag-over');
-});
-uploadAreaEl.addEventListener('dragleave', function() {
-  uploadAreaEl.classList.remove('drag-over');
-});
-uploadAreaEl.addEventListener('drop', function(e) {
-  e.preventDefault();
-  uploadAreaEl.classList.remove('drag-over');
-  processFiles(e.dataTransfer.files);
-});
+  uploadAreaEl.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    uploadAreaEl.classList.add('drag-over');
+  });
+
+  uploadAreaEl.addEventListener('dragleave', function() {
+    uploadAreaEl.classList.remove('drag-over');
+  });
+
+  uploadAreaEl.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadAreaEl.classList.remove('drag-over');
+    processFiles(e.dataTransfer.files);
+  });
+}
 
 function processFiles(files) {
   for (var i = 0; i < files.length; i++) {
     (function(file) {
       var reader = new FileReader();
       reader.onload = function(e) {
-        uploadedFiles.push({ name: file.name, content: e.target.result });
+        uploadedFiles.push({
+          name: file.name,
+          content: e.target.result
+        });
         renderChips();
       };
       reader.readAsText(file);
@@ -938,7 +956,7 @@ function removeFile(idx) {
 function renderChips() {
   var html = '';
   for (var i = 0; i < uploadedFiles.length; i++) {
-    html += '<span class="file-chip">\uD83D\uDCCE ' + uploadedFiles[i].name + ' <span class="remove" onclick="event.stopPropagation();removeFile(' + i + ')">\u2715</span></span>';
+    html += '<span class="file-chip">\uD83D\uDCCE ' + escapeHtml(uploadedFiles[i].name) + ' <span class="remove" onclick="event.stopPropagation();removeFile(' + i + ')">\u2715</span></span>';
   }
   document.getElementById('fileChips').innerHTML = html;
 }
@@ -946,6 +964,7 @@ function renderChips() {
 function switchView(view) {
   var btns = document.querySelectorAll('.topbar-nav button');
   for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+
   if (view === 'history') {
     btns[1].classList.add('active');
     showHistory();
@@ -954,6 +973,8 @@ function switchView(view) {
     document.getElementById('hero').style.display = '';
     document.querySelector('.search-container').style.display = '';
     document.querySelector('.services-grid').style.display = '';
+    document.getElementById('loading').classList.remove('visible');
+    document.getElementById('error').classList.remove('visible');
     document.getElementById('results').classList.remove('visible');
     document.getElementById('results').innerHTML = '';
   }
@@ -961,16 +982,29 @@ function switchView(view) {
 
 function showHistory() {
   var r = document.getElementById('results');
+  document.getElementById('hero').style.display = 'none';
+  document.querySelector('.search-container').style.display = 'none';
+  document.querySelector('.services-grid').style.display = 'none';
+  document.getElementById('loading').classList.remove('visible');
+  document.getElementById('error').classList.remove('visible');
+
   if (queryHistory.length === 0) {
     r.innerHTML = '<div style="text-align:center;padding:60px;color:#55555e;font-size:14px;">No history yet.</div>';
     r.classList.add('visible');
     return;
   }
+
   var h = '<div class="results-header"><div class="results-title">History</div></div>';
   for (var i = 0; i < queryHistory.length; i++) {
     var item = queryHistory[i];
-    h += '<div class="result-section"><div class="section-label">' + item.service.toUpperCase() + ' \u2014 ' + item.time + '</div><div class="section-content"><strong>' + item.query + '</strong></div></div>';
+    h += '<div class="result-section"><div class="section-label">' +
+      escapeHtml(item.service.toUpperCase()) + ' \u2014 ' +
+      escapeHtml(item.time) +
+      '</div><div class="section-content"><strong>' +
+      escapeHtml(item.query) +
+      '</strong></div></div>';
   }
+
   r.innerHTML = h;
   r.classList.add('visible');
 }
@@ -991,14 +1025,11 @@ function getPrompt(service) {
 
     consultant: base + " You are a senior management consultant (McKinsey/BCG caliber). Analyze the user's business data and situation.\n\n## EXECUTIVE SUMMARY\n2-3 sentence overview and key recommendation.\n\n## DIAGNOSIS\nCore problems. Root causes. Be brutally honest.\n\n## WHERE YOU ARE LOSING MONEY\nRevenue leakage, cost inefficiency, wasted spend. Quantify.\n\n## OPERATIONAL EFFICIENCY\nBottlenecks, redundancies, automation opportunities.\n\n## REVENUE GROWTH OPPORTUNITIES\nUntapped revenue: new markets, upselling, pricing, channels.\n\n## ORGANIZATIONAL RECOMMENDATIONS\nTeam structure, hiring, capability gaps.\n\n## 90-DAY ACTION PLAN\nWeek 1, Month 1, Month 2, Month 3. Each with owner and expected outcome.\n\n## EXPECTED IMPACT\nFinancial and operational impact ranges."
   };
+
   return prompts[service];
 }
 
-function runQuery() {
-  var query = document.getElementById('queryInput').value.trim();
-  if (!query) return;
-  if (!API_KEY) { openModal(); return; }
-
+function setLoadingState() {
   document.getElementById('results').classList.remove('visible');
   document.getElementById('results').innerHTML = '';
   document.getElementById('error').classList.remove('visible');
@@ -1009,15 +1040,185 @@ function runQuery() {
   for (var i = 0; i < steps.length; i++) {
     document.getElementById(steps[i]).className = 'loading-step';
   }
+
   document.getElementById('step1').classList.add('active');
+
   setTimeout(function() {
     document.getElementById('step1').classList.add('done');
     document.getElementById('step2').classList.add('active');
-  }, 2500);
+  }, 1200);
+
   setTimeout(function() {
     document.getElementById('step2').classList.add('done');
     document.getElementById('step3').classList.add('active');
-  }, 6000);
+  }, 2600);
+}
+
+function clearLoadingState() {
+  document.getElementById('loading').classList.remove('visible');
+  document.getElementById('searchBtn').disabled = false;
+}
+
+function buildUserContent(query) {
+  var userContent = query;
+
+  if (currentService === 'consultant' && uploadedFiles.length > 0) {
+    var ctx = '\n\n--- UPLOADED BUSINESS DOCUMENTS ---\n';
+    for (var i = 0; i < uploadedFiles.length; i++) {
+      ctx += '\n=== ' + uploadedFiles[i].name + ' ===\n' + uploadedFiles[i].content.substring(0, 15000) + '\n';
+    }
+    ctx += '\n--- END ---\nAnalyze these documents along with my question.';
+    userContent = query + ctx;
+  }
+
+  return userContent;
+}
+
+function buildRequestBody(query, withSearch) {
+  var body = {
+    model: "google/gemini-2.5-flash",
+    max_tokens: 4096,
+    messages: [
+      { role: "system", content: getPrompt(currentService) },
+      { role: "user", content: buildUserContent(query) }
+    ]
+  };
+
+  if (withSearch) {
+    body.tools = [
+      { type: "openrouter:web_search", max_results: 5 }
+    ];
+  }
+
+  return body;
+}
+
+async function fetchWithTimeout(url, options, timeoutMs) {
+  var controller = new AbortController();
+  var timeout = setTimeout(function() {
+    controller.abort();
+  }, timeoutMs);
+
+  try {
+    var response = await fetch(url, Object.assign({}, options, {
+      signal: controller.signal
+    }));
+    clearTimeout(timeout);
+    return response;
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
+  }
+}
+
+async function callOpenRouter(query, withSearch) {
+  var body = buildRequestBody(query, withSearch);
+
+  var response;
+  try {
+    response = await fetchWithTimeout("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + API_KEY,
+        "HTTP-Referer": window.location.href,
+        "X-Title": "INTEL Company Intelligence"
+      },
+      body: JSON.stringify(body)
+    }, 45000);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('The request timed out. Please try again.');
+    }
+    throw new Error('Network error. Check your connection and try again.');
+  }
+
+  var raw = await response.text();
+  var data = {};
+  try {
+    data = JSON.parse(raw);
+  } catch (e) {
+    data = {};
+  }
+
+  console.log("OpenRouter status:", response.status);
+  console.log("OpenRouter raw response:", raw);
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Invalid API key. Click API KEY and paste a working OpenRouter key.');
+    }
+
+    if (response.status === 402) {
+      throw new Error('Your OpenRouter credits are exhausted, or this request used a paid feature.');
+    }
+
+    if (response.status === 429) {
+      throw new Error('Rate limited. Wait a moment and try again.');
+    }
+
+    var message =
+      (data && data.error && data.error.message) ||
+      data.message ||
+      raw ||
+      ('Error ' + response.status);
+
+    throw new Error(message);
+  }
+
+  return data;
+}
+
+function extractTextFromResponse(data) {
+  if (!data || !data.choices || !data.choices[0] || !data.choices[0].message) {
+    return '';
+  }
+
+  var content = data.choices[0].message.content;
+
+  if (typeof content === 'string') {
+    return content;
+  }
+
+  if (Array.isArray(content)) {
+    var parts = [];
+    for (var i = 0; i < content.length; i++) {
+      if (typeof content[i] === 'string') {
+        parts.push(content[i]);
+      } else if (content[i] && typeof content[i].text === 'string') {
+        parts.push(content[i].text);
+      }
+    }
+    return parts.join('\n').trim();
+  }
+
+  return '';
+}
+
+function saveHistoryItem(query) {
+  queryHistory.unshift({
+    query: query,
+    service: currentService,
+    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  });
+
+  if (queryHistory.length > 50) {
+    queryHistory = queryHistory.slice(0, 50);
+  }
+
+  localStorage.setItem('intel_history', JSON.stringify(queryHistory));
+}
+
+async function runQuery() {
+  var query = document.getElementById('queryInput').value.trim();
+  if (!query) return;
+  if (!API_KEY) {
+    openModal();
+    return;
+  }
+
+  lastRunUsedFallback = false;
+  setLoadingState();
 
   var labels = {
     research: 'Company Brief',
@@ -1028,75 +1229,38 @@ function runQuery() {
     consultant: 'AI Consultant'
   };
 
-  var userContent = query;
-  if (currentService === 'consultant' && uploadedFiles.length > 0) {
-    var ctx = '\n\n--- UPLOADED BUSINESS DOCUMENTS ---\n';
-    for (var i = 0; i < uploadedFiles.length; i++) {
-      ctx += '\n=== ' + uploadedFiles[i].name + ' ===\n' + uploadedFiles[i].content.substring(0, 15000) + '\n';
-    }
-    ctx += '\n--- END ---\nAnalyze these documents along with my question.';
-    userContent = query + ctx;
-  }
-
   var useSearch = (currentService !== 'consultant') || (uploadedFiles.length === 0);
 
-  var body = {
-    model: "google/gemini-2.5-flash",
-    max_tokens: 4096,
-    reasoning: { effort: "none" },
-    messages: [
-      { role: "system", content: getPrompt(currentService) },
-      { role: "user", content: userContent }
-    ]
-  };
+  try {
+    var data;
 
-  if (useSearch) {
-    body.tools = [{ type: "openrouter:web_search", max_results: 5 }];
-  }
+    try {
+      data = await callOpenRouter(query, useSearch);
+    } catch (firstErr) {
+      console.warn('Primary request failed:', firstErr);
 
-  fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + API_KEY,
-      "HTTP-Referer": "https://khaledfattouh.github.io/Intel-app/",
-      "X-Title": "INTEL Company Intelligence"
-    },
-    body: JSON.stringify(body)
-  })
-  .then(function(res) {
-    if (!res.ok) {
-      return res.json().catch(function() { return {}; }).then(function(err) {
-        if (res.status === 401) throw new Error('Invalid API key. Click API KEY to update.');
-        if (res.status === 402) throw new Error('Out of credits. Add credits at openrouter.ai/credits');
-        throw new Error((err.error && err.error.message) || 'Error ' + res.status);
-      });
+      if (useSearch) {
+        lastRunUsedFallback = true;
+        data = await callOpenRouter(query, false);
+      } else {
+        throw firstErr;
+      }
     }
-    return res.json();
-  })
-  .then(function(data) {
-    var text = '';
-    if (data && data.choices && data.choices[0] && data.choices[0].message) {
-      text = data.choices[0].message.content || '';
-    }
-    if (!text.trim()) throw new Error('No response returned. Try again.');
 
-    queryHistory.unshift({
-      query: query,
-      service: currentService,
-      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-    });
-    renderResults(query, labels[currentService], parseSections(text));
-  })
-  .catch(function(err) {
+    var text = extractTextFromResponse(data);
+    if (!text.trim()) {
+      throw new Error('No response returned. Try again.');
+    }
+
+    saveHistoryItem(query);
+    renderResults(query, labels[currentService], parseSections(text), lastRunUsedFallback);
+  } catch (err) {
     console.error(err);
     document.getElementById('errorText').textContent = err.message || 'Something went wrong.';
     document.getElementById('error').classList.add('visible');
-  })
-  .finally(function() {
-    document.getElementById('loading').classList.remove('visible');
-    document.getElementById('searchBtn').disabled = false;
-  });
+  } finally {
+    clearLoadingState();
+  }
 }
 
 function parseSections(text) {
@@ -1104,46 +1268,138 @@ function parseSections(text) {
   var lines = text.split('\n');
   var title = '';
   var content = [];
+
   for (var i = 0; i < lines.length; i++) {
     var match = lines[i].match(/^##\s+(.+)/);
     if (match) {
-      if (title) sections.push({ title: title, content: content.join('\n').trim() });
+      if (title) {
+        sections.push({
+          title: title,
+          content: content.join('\n').trim()
+        });
+      }
       title = match[1];
       content = [];
     } else {
       content.push(lines[i]);
     }
   }
-  if (title) sections.push({ title: title, content: content.join('\n').trim() });
-  if (sections.length === 0) sections.push({ title: 'ANALYSIS', content: text.trim() });
+
+  if (title) {
+    sections.push({
+      title: title,
+      content: content.join('\n').trim()
+    });
+  }
+
+  if (sections.length === 0) {
+    sections.push({
+      title: 'ANALYSIS',
+      content: text.trim()
+    });
+  }
+
   return sections;
 }
 
-function formatContent(t) {
-  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  t = t.replace(/^[-\u2022]\s+(.+)/gm, '<li>$1</li>');
-  t = t.replace(/^\d+\.\s+(.+)/gm, '<li>$1</li>');
-  t = t.replace(/((?:<li>.+?<\/li>\n?)+)/g, '<ul>$1</ul>');
-  t = t.replace(/\n\n/g, '</p><p>');
-  t = t.replace(/\n/g, '<br>');
-  return '<p>' + t + '</p>';
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-function renderResults(query, label, sections) {
-  var date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  var h = '<div class="results-header"><div class="results-title">' + query + '</div><div class="results-meta">' + label + ' \u2022 ' + date + '</div></div>';
-  for (var i = 0; i < sections.length; i++) {
-    h += '<div class="result-section"><div class="section-label">' + sections[i].title + '</div><div class="section-content">' + formatContent(sections[i].content) + '</div></div>';
+function formatContent(text) {
+  var escaped = escapeHtml(text);
+
+  escaped = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  var lines = escaped.split('\n');
+  var html = '';
+  var inList = false;
+  var paragraph = [];
+
+  function flushParagraph() {
+    if (paragraph.length) {
+      var paragraphText = paragraph.join('<br>');
+      html += '<p>' + paragraphText + '</p>';
+      paragraph = [];
+    }
   }
+
+  function closeList() {
+    if (inList) {
+      html += '</ul>';
+      inList = false;
+    }
+  }
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+
+    if (!line) {
+      flushParagraph();
+      closeList();
+      continue;
+    }
+
+    if (/^[-•]\s+/.test(line) || /^\d+\.\s+/.test(line)) {
+      flushParagraph();
+      if (!inList) {
+        html += '<ul>';
+        inList = true;
+      }
+      var item = line.replace(/^[-•]\s+/, '').replace(/^\d+\.\s+/, '');
+      html += '<li>' + item + '</li>';
+    } else {
+      closeList();
+      paragraph.push(line);
+    }
+  }
+
+  flushParagraph();
+  closeList();
+
+  return html || '<p></p>';
+}
+
+function renderResults(query, label, sections, usedFallback) {
+  document.getElementById('hero').style.display = '';
+  document.querySelector('.search-container').style.display = '';
+  document.querySelector('.services-grid').style.display = '';
+
+  var date = new Date().toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  var meta = label + ' \u2022 ' + date;
+  if (usedFallback) {
+    meta += ' \u2022 fallback mode';
+  }
+
+  var h =
+    '<div class="results-header">' +
+      '<div class="results-title">' + escapeHtml(query) + '</div>' +
+      '<div class="results-meta">' + escapeHtml(meta) + '</div>' +
+    '</div>';
+
+  for (var i = 0; i < sections.length; i++) {
+    h +=
+      '<div class="result-section">' +
+        '<div class="section-label">' + escapeHtml(sections[i].title) + '</div>' +
+        '<div class="section-content">' + formatContent(sections[i].content) + '</div>' +
+      '</div>';
+  }
+
   var r = document.getElementById('results');
   r.innerHTML = h;
   r.classList.add('visible');
   r.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-document.getElementById('queryInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') runQuery();
-});
 </script>
 
 </body>
