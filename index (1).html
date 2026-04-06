@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INTEL° — Company Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #111113;
+    --surface-2: #18181b;
+    --border: #2a2a2e;
+    --border-light: #333338;
+    --text: #f0f0f2;
+    --text-dim: #8b8b95;
+    --text-muted: #55555e;
+    --accent: #c8ff00;
+    --accent-dim: rgba(200, 255, 0, 0.08);
+    --red: #ff4d4d;
+    --green: #2ed573;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #0a0a0b;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200, 255, 0, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200, 255, 0, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(10, 10, 11, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--accent);
+  }
+
+  .logo span {
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-nav {
+    display: flex;
+    gap: 4px;
+  }
+
+  .topbar-nav button {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .topbar-nav button:hover,
+  .topbar-nav button.active {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  .topbar-nav button.active {
+    color: var(--accent);
+  }
+
+  .api-key-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .api-key-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .api-key-btn.connected {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    width: 90%;
+    max-width: 480px;
+    animation: fadeUp 0.3s ease-out;
+  }
+
+  .modal h2 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .modal p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .modal input {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+
+  .modal input:focus {
+    border-color: var(--accent);
+  }
+
+  .modal .hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal .hint a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .modal-actions button {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-cancel {
+    background: var(--surface-2);
+    color: var(--text-dim);
+    border: 1px solid var(--border) !important;
+  }
+
+  .btn-save {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-save:hover {
+    filter: brightness(1.1);
+  }
+
+  /* MAIN */
+  .main {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 88px 24px 60px;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 40px 0 32px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(200, 255, 0, 0.12);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(38px, 7vw, 68px);
+    font-weight: 400;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* SETUP BANNER */
+  .setup-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(200, 255, 0, 0.06), rgba(200, 255, 0, 0.02));
+    border: 1px solid rgba(200, 255, 0, 0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .setup-banner.visible {
+    display: block;
+  }
+
+  .setup-banner p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .setup-banner button {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+
+  /* SEARCH */
+  .search-container {
+    position: relative;
+    margin: 24px 0 20px;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 6px 6px 6px 24px;
+    transition: all 0.3s;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-dim), 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .search-box svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .search-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+
+  .search-box input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .search-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .search-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* FILE UPLOAD */
+  .upload-area {
+    display: none;
+    margin: 0 0 20px;
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .upload-area.visible {
+    display: block;
+  }
+
+  .upload-area:hover,
+  .upload-area.drag-over {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .upload-area .upload-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .upload-area .upload-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .upload-area .upload-text strong {
+    color: var(--accent);
+  }
+
+  .upload-area input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .file-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+  }
+
+  .file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  .file-chip .remove {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .file-chip .remove:hover {
+    color: var(--red);
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .service-tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+
+  .service-tab:hover {
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+  }
+
+  .service-tab.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .service-tab .icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .service-tab .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--text-dim);
+  }
+
+  .service-tab.active .label {
+    color: var(--accent);
+  }
+
+  /* LOADING */
+  .loading-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .loading-state.visible {
+    display: block;
+  }
+
+  .loader-ring {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .loading-steps {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .loading-step {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .loading-step.done {
+    color: var(--accent);
+  }
+
+  .loading-step.active {
+    color: var(--text-dim);
+  }
+
+  /* RESULTS */
+  .results-container {
+    display: none;
+  }
+
+  .results-container.visible {
+    display: block;
+  }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .results-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 28px;
+  }
+
+  .results-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .result-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.4s ease-out both;
+  }
+
+  .result-section:nth-child(2) { animation-delay: 0.05s; }
+  .result-section:nth-child(3) { animation-delay: 0.1s; }
+  .result-section:nth-child(4) { animation-delay: 0.15s; }
+  .result-section:nth-child(5) { animation-delay: 0.2s; }
+  .result-section:nth-child(6) { animation-delay: 0.25s; }
+  .result-section:nth-child(7) { animation-delay: 0.3s; }
+  .result-section:nth-child(8) { animation-delay: 0.35s; }
+  .result-section:nth-child(9) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-content {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text-dim);
+  }
+
+  .section-content strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .section-content ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .section-content li {
+    padding: 6px 0 6px 18px;
+    position: relative;
+  }
+
+  .section-content li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  /* ERROR */
+  .error-msg {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    color: var(--red);
+    font-size: 14px;
+  }
+
+  .error-msg.visible {
+    display: block;
+  }
+
+  .error-msg .retry-btn {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .footer .powered {
+    margin-top: 8px;
+    color: var(--text-muted);
+    font-size: 11px;
+  }
+
+  .footer .powered span {
+    color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 0 16px; }
+    .topbar-nav { display: none; }
+    .main { padding: 72px 16px 40px; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .search-btn { padding: 14px 16px; font-size: 12px; }
+    .result-section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">INTEL<span>&deg;</span></div>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <button class="active" onclick="switchView('research')">Research</button>
+      <button onclick="switchView('history')">History</button>
+    </nav>
+    <button class="api-key-btn" id="apiKeyBtn" onclick="openModal()">&#9919; API KEY</button>
+  </div>
+</div>
+
+<!-- API KEY MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>Connect your OpenRouter key</h2>
+    <p>INTEL&deg; routes through OpenRouter to access AI models with web search. Your key stays in your browser only.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-or-v1-..." autocomplete="off" />
+    <div class="hint">
+      1. Go to <a href="https://openrouter.ai" target="_blank">openrouter.ai</a> and sign up (Google login works)<br />
+      2. Go to <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> &rarr; Create Key &rarr; copy it<br />
+      Free credit included &mdash; no payment needed.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveApiKey()">Save &amp; Connect</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <div class="hero" id="hero">
+    <div class="hero-badge"><span class="dot"></span> AI-POWERED INTELLIGENCE</div>
+    <h1>Know any company<br />in <em>seconds</em></h1>
+    <p>Company research, startup analysis, AI consulting with file analysis &mdash; powered by AI with live web search. Free to use.</p>
+  </div>
+
+  <div class="setup-banner" id="setupBanner">
+    <p>Add your free OpenRouter API key to start</p>
+    <button onclick="openModal()">SET UP API KEY</button>
+  </div>
+
+  <div class="search-container">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input type="text" id="queryInput" placeholder="Enter a company name, business idea, or question..." autocomplete="off" />
+      <button class="search-btn" id="searchBtn" onclick="runQuery()">ANALYZE</button>
+    </div>
+  </div>
+
+  <!-- FILE UPLOAD (consultant only) -->
+  <div class="upload-area" id="uploadArea">
+    <div class="upload-icon">&#128196;</div>
+    <div class="upload-text"><strong>Drop files here</strong> or click to upload<br />Financial reports, P&amp;L sheets, strategy docs, spreadsheets</div>
+    <input type="file" id="fileInput" multiple accept=".txt,.csv,.json,.md,.html,.xml,.log,.tsv" />
+    <div class="file-chips" id="fileChips"></div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="services-grid">
+    <div class="service-tab active" data-service="research" onclick="selectService(this)"><div class="icon">&#128269;</div><div class="label">Company Brief</div></div>
+    <div class="service-tab" data-service="startup" onclick="selectService(this)"><div class="icon">&#128640;</div><div class="label">Should I Start This?</div></div>
+    <div class="service-tab" data-service="monetize" onclick="selectService(this)"><div class="icon">&#128176;</div><div class="label">How to Monetize</div></div>
+    <div class="service-tab" data-service="improve" onclick="selectService(this)"><div class="icon">&#9889;</div><div class="label">Make It Better</div></div>
+    <div class="service-tab" data-service="competitive" onclick="selectService(this)"><div class="icon">&#127919;</div><div class="label">Competitive Intel</div></div>
+    <div class="service-tab" data-service="consultant" onclick="selectService(this)"><div class="icon">&#129504;</div><div class="label">AI Consultant</div></div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" id="loading">
+    <div class="loader-ring"></div>
+    <div class="loading-text">ANALYZING...</div>
+    <div class="loading-steps">
+      <div class="loading-step" id="step1">Searching the web...</div>
+      <div class="loading-step" id="step2">Processing intelligence...</div>
+      <div class="loading-step" id="step3">Building report...</div>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-msg" id="error">
+    <p id="errorText">Something went wrong.</p>
+    <button class="retry-btn" onclick="runQuery()">Try Again</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-container" id="results"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>INTEL&deg; COMPANY INTELLIGENCE</p>
+    <p class="powered">Powered by <span>AI</span> via OpenRouter</p>
+  </div>
+
+</div>
+
+<script>
+var currentService = 'research';
+var queryHistory = [];
+var uploadedFiles = [];
+var API_KEY = localStorage.getItem('intel_or_key') || '';
+
+window.addEventListener('DOMContentLoaded', function() {
+  if (API_KEY) {
+    document.getElementById('apiKeyBtn').textContent = '\u2713 CONNECTED';
+    document.getElementById('apiKeyBtn').classList.add('connected');
+  } else {
+    document.getElementById('setupBanner').classList.add('visible');
+  }
+});
+
+function openModal() {
+  document.getElementById('modal').classList.add('visible');
+  document.getElementById('apiKeyInput').value = API_KEY;
+  setTimeout(function() { document.getElementById('apiKeyInput').focus(); }, 100);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('visible');
+}
+
+function saveApiKey() {
+  var key = document.getElementById('apiKeyInput').value.trim();
+  if (!key) return;
+  API_KEY = key;
+  localStorage.setItem('intel_or_key', key);
+  document.getElementById('apiKeyBtn').textContent = '\u2713 CONNECTED';
+  document.getElementById('apiKeyBtn').classList.add('connected');
+  document.getElementById('setupBanner').classList.remove('visible');
+  closeModal();
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function selectService(el) {
+  var tabs = document.querySelectorAll('.service-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  el.classList.add('active');
+  currentService = el.getAttribute('data-service');
+  if (currentService === 'consultant') {
+    document.getElementById('uploadArea').classList.add('visible');
+  } else {
+    document.getElementById('uploadArea').classList.remove('visible');
+  }
+}
+
+// File handling
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  processFiles(e.target.files);
+});
+
+var uploadAreaEl = document.getElementById('uploadArea');
+uploadAreaEl.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  uploadAreaEl.classList.add('drag-over');
+});
+uploadAreaEl.addEventListener('dragleave', function() {
+  uploadAreaEl.classList.remove('drag-over');
+});
+uploadAreaEl.addEventListener('drop', function(e) {
+  e.preventDefault();
+  uploadAreaEl.classList.remove('drag-over');
+  processFiles(e.dataTransfer.files);
+});
+
+function processFiles(files) {
+  for (var i = 0; i < files.length; i++) {
+    (function(file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedFiles.push({ name: file.name, content: e.target.result });
+        renderChips();
+      };
+      reader.readAsText(file);
+    })(files[i]);
+  }
+}
+
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  renderChips();
+}
+
+function renderChips() {
+  var html = '';
+  for (var i = 0; i < uploadedFiles.length; i++) {
+    html += '<span class="file-chip">\uD83D\uDCCE ' + uploadedFiles[i].name + ' <span class="remove" onclick="event.stopPropagation();removeFile(' + i + ')">\u2715</span></span>';
+  }
+  document.getElementById('fileChips').innerHTML = html;
+}
+
+function switchView(view) {
+  var btns = document.querySelectorAll('.topbar-nav button');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  if (view === 'history') {
+    btns[1].classList.add('active');
+    showHistory();
+  } else {
+    btns[0].classList.add('active');
+    document.getElementById('hero').style.display = '';
+    document.querySelector('.search-container').style.display = '';
+    document.querySelector('.services-grid').style.display = '';
+    document.getElementById('results').classList.remove('visible');
+    document.getElementById('results').innerHTML = '';
+  }
+}
+
+function showHistory() {
+  var r = document.getElementById('results');
+  if (queryHistory.length === 0) {
+    r.innerHTML = '<div style="text-align:center;padding:60px;color:#55555e;font-size:14px;">No history yet.</div>';
+    r.classList.add('visible');
+    return;
+  }
+  var h = '<div class="results-header"><div class="results-title">History</div></div>';
+  for (var i = 0; i < queryHistory.length; i++) {
+    var item = queryHistory[i];
+    h += '<div class="result-section"><div class="section-label">' + item.service.toUpperCase() + ' \u2014 ' + item.time + '</div><div class="section-content"><strong>' + item.query + '</strong></div></div>';
+  }
+  r.innerHTML = h;
+  r.classList.add('visible');
+}
+
+function getPrompt(service) {
+  var base = "You are INTEL\u00B0, a world-class business intelligence platform. Be specific and data-driven. Format your response with ## section headers exactly as specified below. Use **bold** for key terms.";
+
+  var prompts = {
+    research: base + "\n\n## OVERVIEW\n2-3 sentences: what they do, founded, HQ, scale.\n\n## BUSINESS MODEL\nRevenue streams, pricing, customers, value prop.\n\n## KEY FACTS\n5-7 facts: funding, valuation, employees, leadership, revenue.\n\n## RECENT NEWS\n3-5 recent significant news items.\n\n## COMPETITORS\n4-6 competitors with differentiation.\n\n## STRATEGIC ASSESSMENT\n2-3 sentence sharp take on position and outlook.",
+
+    startup: base + "\n\n## VERDICT\nBold YES/NO/CONDITIONAL with reasoning.\n\n## MARKET OPPORTUNITY\nSize, growth, players.\n\n## STARTUP FEASIBILITY\nCapital, team, MVP timeline, complexity.\n\n## REVENUE POTENTIAL\nModel, Year 1 and Year 3 estimates.\n\n## RISKS & KILLERS\nTop 5 risks.\n\n## FIRST 30 DAYS\n5 specific actionable steps.",
+
+    monetize: base + "\n\n## CORE REVENUE MODEL\nPrimary money-making method.\n\n## ADDITIONAL REVENUE STREAMS\n5-7 secondary methods.\n\n## PRICING STRATEGY\nSpecific pricing with competitor refs.\n\n## GROWTH LEVERS\n5 revenue drivers.\n\n## MONETIZATION TIMELINE\nPhased: launch, 6mo, 12mo, 24mo.\n\n## BENCHMARKS\nSimilar companies monetization.",
+
+    improve: base + "\n\n## CURRENT STATE\nWhat works, what does not.\n\n## QUICK WINS (30 Days)\n5 high-impact easy improvements.\n\n## STRATEGIC IMPROVEMENTS (3-6 Months)\n5 medium-term initiatives.\n\n## GROWTH OPPORTUNITIES\n4-5 adjacent markets/products.\n\n## TECHNOLOGY & PRODUCT\nSpecific tech improvements.\n\n## KEY METRICS\n6-8 KPIs.",
+
+    competitive: base + "\n\n## COMPETITIVE LANDSCAPE\nMajor players, segments.\n\n## HEAD-TO-HEAD\nTop 3-4 competitors compared.\n\n## COMPETITIVE ADVANTAGES\nMoats.\n\n## VULNERABILITIES\nExposure points.\n\n## MARKET TRENDS\n3-5 trends.\n\n## STRATEGIC RECOMMENDATIONS\n4-5 actionable recs.",
+
+    consultant: base + " You are a senior management consultant (McKinsey/BCG caliber). Analyze the user's business data and situation.\n\n## EXECUTIVE SUMMARY\n2-3 sentence overview and key recommendation.\n\n## DIAGNOSIS\nCore problems. Root causes. Be brutally honest.\n\n## WHERE YOU ARE LOSING MONEY\nRevenue leakage, cost inefficiency, wasted spend. Quantify.\n\n## OPERATIONAL EFFICIENCY\nBottlenecks, redundancies, automation opportunities.\n\n## REVENUE GROWTH OPPORTUNITIES\nUntapped revenue: new markets, upselling, pricing, channels.\n\n## ORGANIZATIONAL RECOMMENDATIONS\nTeam structure, hiring, capability gaps.\n\n## 90-DAY ACTION PLAN\nWeek 1, Month 1, Month 2, Month 3. Each with owner and expected outcome.\n\n## EXPECTED IMPACT\nFinancial and operational impact ranges."
+  };
+  return prompts[service];
+}
+
+function runQuery() {
+  var query = document.getElementById('queryInput').value.trim();
+  if (!query) return;
+  if (!API_KEY) { openModal(); return; }
+
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('error').classList.remove('visible');
+  document.getElementById('loading').classList.add('visible');
+  document.getElementById('searchBtn').disabled = true;
+
+  var steps = ['step1', 'step2', 'step3'];
+  for (var i = 0; i < steps.length; i++) {
+    document.getElementById(steps[i]).className = 'loading-step';
+  }
+  document.getElementById('step1').classList.add('active');
+  setTimeout(function() {
+    document.getElementById('step1').classList.add('done');
+    document.getElementById('step2').classList.add('active');
+  }, 2500);
+  setTimeout(function() {
+    document.getElementById('step2').classList.add('done');
+    document.getElementById('step3').classList.add('active');
+  }, 6000);
+
+  var labels = {
+    research: 'Company Brief',
+    startup: 'Startup Viability',
+    monetize: 'Monetization Strategy',
+    improve: 'Improvement Plan',
+    competitive: 'Competitive Intel',
+    consultant: 'AI Consultant'
+  };
+
+  var userContent = query;
+  if (currentService === 'consultant' && uploadedFiles.length > 0) {
+    var ctx = '\n\n--- UPLOADED BUSINESS DOCUMENTS ---\n';
+    for (var i = 0; i < uploadedFiles.length; i++) {
+      ctx += '\n=== ' + uploadedFiles[i].name + ' ===\n' + uploadedFiles[i].content.substring(0, 15000) + '\n';
+    }
+    ctx += '\n--- END ---\nAnalyze these documents along with my question.';
+    userContent = query + ctx;
+  }
+
+  var useSearch = (currentService !== 'consultant') || (uploadedFiles.length === 0);
+
+  var body = {
+    model: "google/gemini-2.5-flash",
+    max_tokens: 4096,
+    reasoning: { effort: "none" },
+    messages: [
+      { role: "system", content: getPrompt(currentService) },
+      { role: "user", content: userContent }
+    ]
+  };
+
+  if (useSearch) {
+    body.tools = [{ type: "openrouter:web_search", max_results: 5 }];
+  }
+
+  fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY,
+      "HTTP-Referer": "https://khaledfattouh.github.io/Intel-app/",
+      "X-Title": "INTEL Company Intelligence"
+    },
+    body: JSON.stringify(body)
+  })
+  .then(function(res) {
+    if (!res.ok) {
+      return res.json().catch(function() { return {}; }).then(function(err) {
+        if (res.status === 401) throw new Error('Invalid API key. Click API KEY to update.');
+        if (res.status === 402) throw new Error('Out of credits. Add credits at openrouter.ai/credits');
+        throw new Error((err.error && err.error.message) || 'Error ' + res.status);
+      });
+    }
+    return res.json();
+  })
+  .then(function(data) {
+    var text = '';
+    if (data && data.choices && data.choices[0] && data.choices[0].message) {
+      text = data.choices[0].message.content || '';
+    }
+    if (!text.trim()) throw new Error('No response returned. Try again.');
+
+    queryHistory.unshift({
+      query: query,
+      service: currentService,
+      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    });
+    renderResults(query, labels[currentService], parseSections(text));
+  })
+  .catch(function(err) {
+    console.error(err);
+    document.getElementById('errorText').textContent = err.message || 'Something went wrong.';
+    document.getElementById('error').classList.add('visible');
+  })
+  .finally(function() {
+    document.getElementById('loading').classList.remove('visible');
+    document.getElementById('searchBtn').disabled = false;
+  });
+}
+
+function parseSections(text) {
+  var sections = [];
+  var lines = text.split('\n');
+  var title = '';
+  var content = [];
+  for (var i = 0; i < lines.length; i++) {
+    var match = lines[i].match(/^##\s+(.+)/);
+    if (match) {
+      if (title) sections.push({ title: title, content: content.join('\n').trim() });
+      title = match[1];
+      content = [];
+    } else {
+      content.push(lines[i]);
+    }
+  }
+  if (title) sections.push({ title: title, content: content.join('\n').trim() });
+  if (sections.length === 0) sections.push({ title: 'ANALYSIS', content: text.trim() });
+  return sections;
+}
+
+function formatContent(t) {
+  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/^[-\u2022]\s+(.+)/gm, '<li>$1</li>');
+  t = t.replace(/^\d+\.\s+(.+)/gm, '<li>$1</li>');
+  t = t.replace(/((?:<li>.+?<\/li>\n?)+)/g, '<ul>$1</ul>');
+  t = t.replace(/\n\n/g, '</p><p>');
+  t = t.replace(/\n/g, '<br>');
+  return '<p>' + t + '</p>';
+}
+
+function renderResults(query, label, sections) {
+  var date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  var h = '<div class="results-header"><div class="results-title">' + query + '</div><div class="results-meta">' + label + ' \u2022 ' + date + '</div></div>';
+  for (var i = 0; i < sections.length; i++) {
+    h += '<div class="result-section"><div class="section-label">' + sections[i].title + '</div><div class="section-content">' + formatContent(sections[i].content) + '</div></div>';
+  }
+  var r = document.getElementById('results');
+  r.innerHTML = h;
+  r.classList.add('visible');
+  r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('queryInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') runQuery();
+});
+</script>
+
+</body>
+</html>
